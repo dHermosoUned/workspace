@@ -9,30 +9,33 @@ vocabulary = {}
 aciertos=0
 errores=0
 numPreguntas=0
-LANG = "fr"
+languages = {"F":"fr", "D": "de"}
+
+DEFAULT_LANG = "fr"
 GLOBAL_PATH = "/Users/user1/workspace/vocabulary"
 
 def limpiaPantalla():
     os.system('clear')
 
-def loadVocabulary():
-    FILE_VOCABULARY = GLOBAL_PATH + "/vocabulary.txt"
+def loadVocabulary(file="vocabulary.txt"):
+    FILE_VOCABULARY = GLOBAL_PATH +"/"+ file
     i = 0
     with open(FILE_VOCABULARY) as archivo:
         for linea in archivo:
             vocabulary[i] = str.strip(linea)
             i=i+1 
 
-def createAudios():
+def createAudios(language=DEFAULT_LANG):
     for index in vocabulary:
         text = vocabulary[index]
-        tts = gTTS(text=text, lang=LANG, slow=False)
-        tts.save(GLOBAL_PATH + "/pronunciations/"+str(index)+".mp3")
+        tts = gTTS(text=text, lang=language, slow=False)
+        tts.save(GLOBAL_PATH + "/pronunciations/"+language+"/"+str(index)+".mp3")
 
-def askQuestions():
+def askQuestions(language=DEFAULT_LANG):
     global aciertos
     global errores
     numPreguntas = input("Combien de questions veux-tu?: ")
+    checkCaseSensitive=False
     if numPreguntas == 0:
         exit()
 
@@ -40,15 +43,26 @@ def askQuestions():
     input("\n\nVoy a comenzar a dictarte palabras. Pulsa la tecla gorda (ENTER) para comenzar...")
     for i in range(int(numPreguntas)):
         randIndexAudio = random.randint(0,len(vocabulary)-1)
-        playsound(GLOBAL_PATH + "/pronunciations/"+str(randIndexAudio)+".mp3")
+        playsound(GLOBAL_PATH + "/pronunciations/"+language+"/"+str(randIndexAudio)+".mp3")
         respuesta = input("Escribe lo que has oido: ")
         respuestaCorrecta = vocabulary[randIndexAudio]
-        if respuesta.casefold() == str(respuestaCorrecta).casefold():
-            print("Correcto! sigues asi")
-            aciertos=aciertos+1
+        if(language == "de"):
+            checkCaseSensitive = True
+
+        if(checkCaseSensitive == False):
+            if respuesta.strip().casefold() == str(respuestaCorrecta).casefold():
+                print("Correcto! sigues asi")
+                aciertos=aciertos+1
+            else:
+                print("Meeeeeec... error, el resultado correcto era ("+respuestaCorrecta+") intenta mejorar...")
+                errores=errores+1
         else:
-            print("Meeeeeec... error, el resultado correcto era ("+respuestaCorrecta+") intenta mejorar...")
-            errores=errores+1
+            if respuesta.strip() == str(respuestaCorrecta):
+                print("Correcto! sigues asi")
+                aciertos=aciertos+1
+            else:
+                print("Meeeeeec... error, el resultado correcto era ("+respuestaCorrecta+") intenta mejorar...")
+                errores=errores+1
 
 def printReport():
     print("********************* RESULTADOS *****************")
@@ -60,18 +74,22 @@ def printReport():
 def cleanUp():
     lista_ficheros = os.listdir(GLOBAL_PATH + "/pronunciations")
     for fichero in lista_ficheros:
-        print(str(fichero))
         if fichero.endswith(".mp3"):
-            print("borrando")
             os.remove(GLOBAL_PATH + "/pronunciations/" + fichero)
         
 def main():
     cleanUp()
+    lang = input("En que idioma quieres practicar?: \n\n [F] Francais \n [D] Deutsch \n\n [X] Salir \n\n Elige una opcion: ").upper()
+    if lang == "X":
+        exit()
+
+    vocabularyFile = input("Dime como se llama el vocabulario a repasar: ").lower()
+
     limpiaPantalla()
-    loadVocabulary()
-    createAudios()
+    loadVocabulary(vocabularyFile)
+    createAudios(languages[lang])
     limpiaPantalla()
-    askQuestions()
+    askQuestions(languages[lang])
     limpiaPantalla
     printReport()
 
