@@ -2,12 +2,29 @@ from gtts import gTTS
 from playsound import playsound
 import os
 
-textToTranslate = input("Dit moi une phrase s'il te plait: ")
-lang = "fr"
+# global variable to hold all the vocabulary
+vocabulary = []
+LANG = "fr"
 
-tts = gTTS(text=textToTranslate, lang=lang, slow=False)
+def limpiaPantalla():
+    os.system('clear')
 
-tts.save("pronunciations/test.mp3")
-playsound("pronunciations/test.mp3")
+def loadVocabulary():
+    FILE_VOCABULARY = "vocabulary.txt"
+    i = 0
+    with open(FILE_VOCABULARY) as archivo:
+        for linea in archivo:
+            vocabulary[i] = linea 
+            i=i+1 
 
-os.remove("./pronunciations/test.mp3")
+
+limpiaPantalla()
+loadVocabulary()
+
+for word in vocabulary:
+    tts = gTTS(text=word, lang=LANG, slow=False)
+    tts.save("pronunciations/"+word+".mp3")
+
+print("End---")
+#playsound("pronunciations/test.mp3")
+#os.remove("./pronunciations/test.mp3")
