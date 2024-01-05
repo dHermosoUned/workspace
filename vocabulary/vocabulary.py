@@ -33,14 +33,17 @@ def askQuestions():
     global aciertos
     global errores
     numPreguntas = input("Combien de questions veux-tu?: ")
+    if numPreguntas == 0:
+        exit()
+
     limpiaPantalla
-    input("\n\nVoy a comenzar a dictarte palabras. Pulsa la tecla gorda (ENTER) para la siguiente pregunta...")
+    input("\n\nVoy a comenzar a dictarte palabras. Pulsa la tecla gorda (ENTER) para comenzar...")
     for i in range(int(numPreguntas)):
         randIndexAudio = random.randint(0,len(vocabulary)-1)
         playsound(GLOBAL_PATH + "/pronunciations/"+str(randIndexAudio)+".mp3")
         respuesta = input("Escribe lo que has oido: ")
         respuestaCorrecta = vocabulary[randIndexAudio]
-        if respuesta == respuestaCorrecta:
+        if respuesta.casefold() == str(respuestaCorrecta).casefold():
             print("Correcto! sigues asi")
             aciertos=aciertos+1
         else:
@@ -54,8 +57,16 @@ def printReport():
     print("***** Has sacado un: " + str(6-(errores/aciertos)*int(numPreguntas)) )
     print("*************************************************")
 
-
+def cleanUp():
+    lista_ficheros = os.listdir(GLOBAL_PATH + "/pronunciations")
+    for fichero in lista_ficheros:
+        print(str(fichero))
+        if fichero.endswith(".mp3"):
+            print("borrando")
+            os.remove(GLOBAL_PATH + "/pronunciations/" + fichero)
+        
 def main():
+    cleanUp()
     limpiaPantalla()
     loadVocabulary()
     createAudios()
@@ -66,6 +77,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#playsound("pronunciations/test.mp3")
-#os.remove("./pronunciations/test.mp3")
