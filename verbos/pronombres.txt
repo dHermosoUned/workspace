@@ -1,0 +1,6 @@
+Je
+Tu
+Il,Elle,On,Mon ami,Mon frère,Tout le monde
+Nous,Mama et moi,Papa et moi,Yago et moi,Mon ami et moi
+Vous,Einar et toi, Logan et toi
+Ils,Elles,Papa et Mama,Mes amis,Les élèves, Einar et Logan, mes cousins
