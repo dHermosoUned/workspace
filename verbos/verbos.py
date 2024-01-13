@@ -23,7 +23,7 @@ def getPronombre(randPronombreIndex):
     return randPronombre
 
 def cargaPronombres():
-    FILE_PRONOMBRES = "pronombres.txt"
+    FILE_PRONOMBRES = "/Users/user1/workspace/verbos/pronombres.txt"
     i = 0
     with open(FILE_PRONOMBRES) as archivo:
         for linea in archivo:
@@ -39,7 +39,7 @@ def cargaTodosVerbos():
 def cargaVerbos(opt):
     #load all verbs
     vc = {}
-    VERBS_FOLDER = "verbos/"+opciones[opt]
+    VERBS_FOLDER = "/Users/user1/workspace/verbos/verbos/"+opciones[opt]
     with os.scandir(VERBS_FOLDER) as ficheros:
         for fichero in ficheros:
             fileName = fichero.name.split('.')[0]

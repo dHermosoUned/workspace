@@ -9,7 +9,7 @@ vocabulary = {}
 aciertos=0
 errores=0
 numPreguntas=0
-languages = {"F":"fr", "D": "de"}
+languages = {"F":"fr", "D": "de", "I":"en"}
 
 DEFAULT_LANG = "fr"
 GLOBAL_PATH = "/Users/user1/workspace/vocabulary"
@@ -68,7 +68,7 @@ def printReport():
     print("********************* RESULTADOS *****************")
     print("***** ACIERTOS: " + str(aciertos) + " ********************************")
     print("***** ERRORES: " + str(errores) + " ********************************")
-    print("***** Has sacado un: " + str(6-(errores/aciertos)*int(numPreguntas)) )
+    print("***** Has sacado un: " + str(6-(errores/(int(numPreguntas)))*6) )
     print("*************************************************")
 
 def cleanUp():
@@ -79,7 +79,7 @@ def cleanUp():
         
 def main():
     cleanUp()
-    lang = input("En que idioma quieres practicar?: \n\n [F] Francais \n [D] Deutsch \n\n [X] Salir \n\n Elige una opcion: ").upper()
+    lang = input("En que idioma quieres practicar?: \n\n [F] Francais \n [D] Deutsch \n [I] Ingles \n\n [X] Salir \n\n Elige una opcion: ").upper()
     if lang == "X":
         exit()
 

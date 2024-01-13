@@ -1,0 +1,8 @@
+Wie heisst du?
+Wie alt bist du?
+Wo wohnst du?
+Woher kommst du?
+Wie ist deine Telefonnummer?
+Wie ist deine Adresse?
+Was machst du gern?
+Was machst du nicht gern?

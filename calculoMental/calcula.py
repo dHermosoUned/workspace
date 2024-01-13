@@ -5,7 +5,7 @@ import time
 from gtts import gTTS
 from playsound import playsound
 
-multiplicandos = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+multiplicandos = [0.001,0.01,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.25]
 multiplicadores = [100,20,35,40,56,78,200,1000,500,250,75,10,30,40,80]
 numPreguntas=""
 respuesta=""
@@ -19,6 +19,8 @@ def limpiarPantalla():
 def counter(numSeconds):
     for i in range(int(numSeconds)):
         time.sleep(1)
+        if respuesta != "":
+            return
     if respuesta == "":
         playsound("/Users/user1/workspace/calculoMental/endRing.mp3")
         
@@ -47,9 +49,7 @@ def muestraReport():
         tablaConError = multiplicandosARepasar[i]
         print("\n Numero "+str(tablaConError))
         print("--------------")
-        for j in range(13):
-            print(str(tablaConError)+" x " + str(j) +" = " + str(tablaConError*j))
-
+        
 limpiarPantalla()
 numPreguntas = pideNumPreguntas()
 timer = pideTimer()
@@ -64,12 +64,12 @@ for i in range(int(numPreguntas)):
     t1.start()
     respuesta = input(str(multiplicador) + " x " + str(multiplicando) + " = ")
     respuestaCorrecta = multiplicando*multiplicador
-    if int(respuesta) == respuestaCorrecta:
+    if float(respuesta) == respuestaCorrecta:
         print("Ohhh yeah baby! sigue asi...")
         aciertos +=1
     else:
         print("Oooppss! la respuesta era: " + str(respuestaCorrecta))
-        multiplicandosARepasar.append(multiplicador)
+        multiplicandosARepasar.append(multiplicando)
         errores +=1
     input("\n\nPulsa la tecla gorda (ENTER) para la siguiente pregunta...")
 
