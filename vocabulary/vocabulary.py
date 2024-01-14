@@ -12,28 +12,34 @@ numPreguntas=0
 languages = {"F":"fr", "D": "de", "I":"en"}
 
 DEFAULT_LANG = "fr"
-GLOBAL_PATH = "/Users/user1/workspace/vocabulary"
+GLOBAL_PATH = script_dir = os.path.dirname(__file__)
 
 def limpiaPantalla():
-    os.system('clear')
+    os.system('cls')
 
 def loadVocabulary(file="vocabulary.txt"):
-    FILE_VOCABULARY = GLOBAL_PATH +"/"+ file
+    FILE_VOCABULARY = GLOBAL_PATH +"\\"+ file
+    print(FILE_VOCABULARY)
     i = 0
-    with open(FILE_VOCABULARY) as archivo:
-        for linea in archivo:
-            vocabulary[i] = str.strip(linea)
-            i=i+1 
+    with open(FILE_VOCABULARY, encoding='utf-8') as reader:
+        for line in reader.readlines():
+            vocabulary[i] = str(line).strip()
+            i = i+1
 
 def createAudios(language=DEFAULT_LANG):
     for index in vocabulary:
-        text = vocabulary[index]
+        linea = vocabulary[index]
+        print(linea)
+        text = str(linea).split(" = ")[0]
+        print(text)
         tts = gTTS(text=text, lang=language, slow=False)
         tts.save(GLOBAL_PATH + "/pronunciations/"+language+"/"+str(index)+".mp3")
+        print("grabado en index", index)
 
 def askQuestions(language=DEFAULT_LANG):
     global aciertos
     global errores
+    global numPreguntas
     numPreguntas = input("Combien de questions veux-tu?: ")
     checkCaseSensitive=False
     if numPreguntas == 0:
@@ -45,7 +51,8 @@ def askQuestions(language=DEFAULT_LANG):
         randIndexAudio = random.randint(0,len(vocabulary)-1)
         playsound(GLOBAL_PATH + "/pronunciations/"+language+"/"+str(randIndexAudio)+".mp3")
         respuesta = input("Escribe lo que has oido: ")
-        respuestaCorrecta = vocabulary[randIndexAudio]
+        respuestaCorrectaLinea = vocabulary[randIndexAudio]
+        respuestaCorrecta = str(respuestaCorrectaLinea).split(" = ")[1]
         if(language == "de"):
             checkCaseSensitive = True
 
@@ -65,10 +72,13 @@ def askQuestions(language=DEFAULT_LANG):
                 errores=errores+1
 
 def printReport():
+    coef = errores / int(numPreguntas)
+    reduccion = 1-coef
+    nota = reduccion * 6
     print("********************* RESULTADOS *****************")
     print("***** ACIERTOS: " + str(aciertos) + " ********************************")
     print("***** ERRORES: " + str(errores) + " ********************************")
-    print("***** Has sacado un: " + str(6-(errores/(int(numPreguntas)))*6) )
+    print("***** Has sacado un: " + str(float(nota) ))
     print("*************************************************")
 
 def cleanUp():
@@ -87,10 +97,12 @@ def main():
 
     limpiaPantalla()
     loadVocabulary(vocabularyFile)
+    print("creando audios...")
     createAudios(languages[lang])
-    limpiaPantalla()
+    print("audios creados...")
+    #limpiaPantalla()
     askQuestions(languages[lang])
-    limpiaPantalla
+    #limpiaPantalla
     printReport()
 
 if __name__ == "__main__":

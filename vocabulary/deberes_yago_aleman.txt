@@ -1,0 +1,8 @@
+Wie ist das Wetter? = Quel temp fait-il?
+Es ist kalt = Il fait froid
+kalt = froid
+Es ist windig = Il y a du vent
+Die Temperatur ist 10 Grad = Il fait 10 degrés
+Es regnet = Il pleut
+Es ist bewölkt = IL y a des nuages,Le ciel est nuageux
+ES ist warm = Il fait chaud
